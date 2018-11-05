@@ -1,0 +1,55 @@
+﻿@model Scanner.Models.CoilIDModel
+@{
+
+    ViewBag.Title = "Scanner Page";
+    var time = DateTime.Now.TimeOfDay;
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<body id="div1">
+    @section Scripts {
+        <script type="text/javascript">
+        $( document ).ready(function() {
+        $("#button1").click(function () {
+        $("#div1").load('@Url.Action("Index")');
+        });
+        });
+        </script>
+        @Scripts.Render("~/bundles/jqueryval")
+
+    }
+
+    @using (Ajax.BeginForm("CoilInfo", "Scanner",
+                            new AjaxOptions { UpdateTargetId = "divInterestDeatils" }))
+    {
+
+        <fieldset>
+            <div id="divInterestDeatils"></div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.ID)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.ID)
+            </div>
+            <p>
+                <input type="submit" value="Calculate" />
+            </p>
+            <div id="div2">
+                <li>@time</li>
+                <li>TYPE: @ViewBag.Type </li>
+            </div>
+            <input type="button" id="button1" value="Refresh" />
+        </fieldset>
+
+        <li>TYPE: @ViewBag.Type </li>
+
+    }
+
+
+</body>
+</html>
