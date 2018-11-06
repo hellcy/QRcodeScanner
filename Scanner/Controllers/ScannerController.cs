@@ -24,22 +24,23 @@ namespace Scanner.Controllers
         public ActionResult Index(CoilIDModel model)
         {
 
-            string a;
             string ConnStr = ConfigurationManager.ConnectionStrings["GramScanner"].ToString();
-            string coilID = model.ID;
+            string code = model.ID;
+            string coilID = code.Substring(0, 9).Trim();
+
             string type = null;
             string color = null;
-            Double weight = 0;
-            Double gauge = 0;
-            Double width = 0;
-            Double order = 0;
+            Double? weight = null;
+            Double? gauge = null;
+            Double? width = null;
+            Double? order = null;
             string p_order = null;
-            Double month_recd = 0;
+            Double? month_recd = null;
             DateTime? date_inwh = null;
             DateTime? date_transfer = null;
             DateTime? last_stocktake_date = null;
             string status = null;
-            Double clength = 0;
+            Double? clength = null;
 
 
             using (SqlConnection newCon = new SqlConnection(ConnStr))
@@ -100,50 +101,17 @@ namespace Scanner.Controllers
                 ViewBag.CoilID = coilID;
                 ViewBag.Type = type;
                 ViewBag.Color = color;
-                if (weight >= 0)
-                {
-                    ViewBag.Weight = weight;
-                }
-                if (gauge >= 0)
-                {
-                    ViewBag.Gauge = gauge;
-                }
-                if (width >= 0)
-                {
-                    ViewBag.Width = width;
-                }
-                if (order >= 0)
-                {
-                    ViewBag.Order = order;
-                }
-                if (p_order != null)
-                {
-                    ViewBag.P_order = p_order;
-                }
-                if (month_recd >= 0)
-                {
-                    ViewBag.Month_recd = month_recd;
-                }
-                if (date_inwh != null)
-                {
-                    ViewBag.Date_inwh = date_inwh;
-                }
-                if (date_transfer != null)
-                {
-                    ViewBag.Date_transfer = date_transfer;
-                }
-                if (last_stocktake_date != null)
-                {
-                    ViewBag.Last_stocktake_date = last_stocktake_date;
-                }
-                if (status != null)
-                {
-                    ViewBag.Status = status;
-                }
-                if (clength >= 0)
-                {
-                    ViewBag.Clength = clength;
-                }
+                ViewBag.Weight = weight;
+                ViewBag.Gauge = gauge;
+                ViewBag.Width = width;
+                ViewBag.Order = order;
+                ViewBag.P_order = p_order;
+                ViewBag.Month_recd = month_recd;
+                ViewBag.Date_inwh = date_inwh;
+                ViewBag.Date_transfer = date_transfer;
+                ViewBag.Last_stocktake_date = last_stocktake_date;
+                ViewBag.Status = status;
+                ViewBag.Clength = clength;
 
                 newCon.Close();
             }
