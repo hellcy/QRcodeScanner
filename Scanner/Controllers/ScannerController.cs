@@ -26,7 +26,7 @@ namespace Scanner.Controllers
 
             string ConnStr = ConfigurationManager.ConnectionStrings["GramScanner"].ToString();
             string code = model.ID;
-            string coilID = code.Substring(0, 9).Trim();
+            string coilID = code.Substring(0, 9).Trim(); //get the first 9 characters as the coilID
 
             string type = null;
             string color = null;
@@ -50,7 +50,8 @@ namespace Scanner.Controllers
                 SqlDataReader rdr = newCmd.ExecuteReader();
                 rdr.Read();
 
-                coilID = rdr.GetString(0);
+                string trueCoilID = rdr.GetString(0);
+                //if (trueCoilID.Equals(coilID))
                 type = rdr.GetString(1);
                 color = rdr.GetString(2);
                 if (!rdr.IsDBNull(3))
