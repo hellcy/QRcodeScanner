@@ -2,7 +2,6 @@
 @{
 
     ViewBag.Title = "Scanner Page";
-    var time = DateTime.Now.TimeOfDay;
 }
 
 @{
@@ -11,23 +10,15 @@
 
 <!DOCTYPE html>
 <html>
-<body id="div1">
+<body>
     @section Scripts {
-        <script type="text/javascript">
-        $( document ).ready(function() {
-        $("#button1").click(function () {
-        $("#div1").load('@Url.Action("Index")');
-        });
-        });
-        </script>
         @Scripts.Render("~/bundles/jqueryval")
 
     }
 
-    @using (Ajax.BeginForm("CoilInfo", "Scanner",
+    @using (Ajax.BeginForm("Index", "Scanner",
                             new AjaxOptions { UpdateTargetId = "divInterestDeatils" }))
     {
-
         <fieldset>
             <div id="divInterestDeatils"></div>
             <div class="editor-label">
@@ -37,17 +28,24 @@
                 @Html.EditorFor(model => model.ID)
             </div>
             <p>
-                <input type="submit" value="Calculate" />
+                <input type="submit" value="Submit" />
             </p>
-            <div id="div2">
-                <li>@time</li>
-                <li>TYPE: @ViewBag.Type </li>
-            </div>
-            <input type="button" id="button1" value="Refresh" />
         </fieldset>
 
-        <li>TYPE: @ViewBag.Type </li>
-
+        <li>CoilID: @ViewBag.CoilID </li>
+        <li>Type: @ViewBag.Type </li>
+        <li>Color: @ViewBag.Color </li>
+        <li>Weight: @ViewBag.Weight </li>
+        <li>Gauge: @ViewBag.Gauge </li>
+        <li>Width: @ViewBag.Width </li>
+        <li>Order: @ViewBag.Order </li>
+        <li>P_order: @ViewBag.P_order </li>
+        <li>Month_recd: @ViewBag.Month_recd </li>
+        <li>Date_inwh: @ViewBag.Date_inwh </li>
+        <li>Date_transfer: @ViewBag.Date_transfer </li>
+        <li>Last_stocktake_date: @ViewBag.Last_stocktake_date </li>
+        <li>Status: @ViewBag.Status </li>
+        <li>Clength: @ViewBag.Clength </li>
     }
 
 
