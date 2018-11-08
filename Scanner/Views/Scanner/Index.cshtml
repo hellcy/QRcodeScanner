@@ -23,15 +23,23 @@
                 $('#ID').on('paste', function () {
                     setTimeout(function () {
                         $("#code").submit();
-
-                    }, 1);
-                    setTimeout(function () {
                         $('#ID').focus();
 
-                    }, 0);
+                    }, 1);
+
+                });
+
+                $('#upload').on('paste', function () {
+                    setTimeout(function () {
+                        $("#code").submit();
+                        $('#upload').focus();
+
+                    }, 1);
 
                 });
                 //$('#ID').focus();
+                //$('#upload').focus();
+
             });
         </script>
     }
@@ -76,10 +84,49 @@
                 CoilID Uploaded
             </div>
             <div id="codeInput" class="editor-field">
-                <input type="text" name="ID" id="ID" />
+                @Html.EditorFor(model => model.ID)
             </div>
-
         </form>
+    </div>
+
+    <div class="col-md-12">
+        <table class="table table-condensed table-hover">
+            <tr>
+                <th>
+                    Product Code
+                </th>
+                <th>
+                    Product Name
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Total Amount
+                </th>
+            </tr>
+
+            <tr>
+                <td>
+                    @ViewBag.CoilID
+                </td>
+                <td>
+                    @ViewBag.Type
+                </td>
+                <td>
+                    @ViewBag.Color
+                </td>
+                <td>
+                    @ViewBag.Weight
+                </td>
+                <td>
+                    @ViewBag.Gauge
+                </td>
+            </tr>
+        </table>
     </div>
 
 </body>
