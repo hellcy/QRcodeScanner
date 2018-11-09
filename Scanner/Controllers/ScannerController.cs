@@ -16,127 +16,88 @@ namespace Scanner.Controllers
 
         public ActionResult Index()
         {
-            CoilIDModel model = new CoilIDModel();
-         
-            return View(model);
+            List<CoilModel> newDetails = new List<CoilModel>()
+            {
+                new CoilModel { ID = "67A122A10" },
+                new CoilModel { ID = "67A580A30" }
+            };
+
+            CoilDetail newCoilDetails = new CoilDetail();
+            newCoilDetails.CoilDetails = newDetails;
+
+            return View(newCoilDetails);
         }
 
         [HttpPost]
-        public ActionResult Index(CoilIDModel model)
+        public ActionResult Index(CoilDetail model)
         {
 
             string ConnStr = ConfigurationManager.ConnectionStrings["GramScanner"].ToString();
-            string coilID;
-            if (model.ID.Length > 9)
+            string input = model.CoilDetails[0].ID;
+
+            List<string> coilIDs = new List<string>();
+
+            int splitAt = 9; // change 9 with the size of strings you want.
+            int coilIDCount = 0;
+            for (int i = 0; i < input.Length; i = i + splitAt)
             {
-                coilID = model.ID.Substring(0, 9).Trim(); //get the first 9 characters as the coilID
+                coilIDCount++;
+                if (input.Length - i >= splitAt)
+                {
+                    model.CoilDetails.Add(new CoilModel());
+                    coilIDs.Add(input.Substring(i, splitAt));
+                }
+                else
+                    coilIDs.Add(input.Substring(i, ((input.Length - i))));
             }
-            else
-                coilID = model.ID;
-
-            string type = null;
-            string color = null;
-            Double? weight = null;
-            Double? gauge = null;
-            Double? width = null;
-            Double? order = null;
-            string p_order = null;
-            Double? month_recd = null;
-            DateTime? date_inwh = null;
-            DateTime? date_transfer = null;
-            DateTime? last_stocktake_date = null;
-            string status = null;
-            Double? clength = null;
-
 
             using (SqlConnection newCon = new SqlConnection(ConnStr))
             {
-                SqlCommand newCmd = new SqlCommand(("select * from X_COIL_MASTER where COILID = '" + coilID + "'"), newCon);
-                newCon.Open();
-                SqlDataReader rdr = newCmd.ExecuteReader();
-                if (rdr.HasRows) // If the sql command doesn't return any record, display a message
+                for (int i = 0; i < coilIDCount; i++)
                 {
-                    rdr.Read();
-                    if (!rdr.IsDBNull(0))
+                    SqlCommand newCmd = new SqlCommand(("select * from X_COIL_MASTER where COILID = '" + coilIDs[i] + "'"), newCon);
+                    newCon.Open();
+                    SqlDataReader rdr = newCmd.ExecuteReader();
+                    if (rdr.HasRows) // If the sql command doesn't return any record, display a message
                     {
-                        coilID = rdr.GetString(0);
+                        rdr.Read();
+                        if (!rdr.IsDBNull(0))
+                            model.CoilDetails[i].ID = rdr.GetString(0);
+                        if (!rdr.IsDBNull(1))
+                            model.CoilDetails[i].Type = rdr.GetString(1);
+                        if (!rdr.IsDBNull(2))
+                            model.CoilDetails[i].Color = rdr.GetString(2);
+                        if (!rdr.IsDBNull(3))
+                            model.CoilDetails[i].Weight = rdr.GetDouble(3);
+                        if (!rdr.IsDBNull(4))
+                            model.CoilDetails[i].Gauge = rdr.GetDouble(4);
+                        if (!rdr.IsDBNull(5))
+                            model.CoilDetails[i].Width = rdr.GetDouble(5);
+                        if (!rdr.IsDBNull(6))
+                            model.CoilDetails[i].Order = rdr.GetDouble(6);
+                        if (!rdr.IsDBNull(7))
+                            model.CoilDetails[i].P_order = rdr.GetString(7);
+                        if (!rdr.IsDBNull(8))
+                            model.CoilDetails[i].Month_recd = rdr.GetDouble(8);
+                        if (!rdr.IsDBNull(9))
+                            model.CoilDetails[i].Date_inwh = rdr.GetDateTime(9);
+                        if (!rdr.IsDBNull(10))
+                            model.CoilDetails[i].Date_transfer = rdr.GetDateTime(10);
+                        if (!rdr.IsDBNull(11))
+                            model.CoilDetails[i].Last_stocktake_date = rdr.GetDateTime(11);
+                        if (!rdr.IsDBNull(12))
+                            model.CoilDetails[i].Status = rdr.GetString(12);
+                        if (!rdr.IsDBNull(13))
+                            model.CoilDetails[i].Clength = rdr.GetDouble(13);
                     }
-                    if (!rdr.IsDBNull(1))
+                    else
                     {
-                        type = rdr.GetString(1);
+                        ViewBag.Error = "No information found in the database.";
                     }
-                    if (!rdr.IsDBNull(2))
-                    {
-                        color = rdr.GetString(2);
-                    }
-                    if (!rdr.IsDBNull(3))
-                    {
-                        weight = rdr.GetDouble(3);
-                    }
-                    if (!rdr.IsDBNull(4))
-                    {
-                        gauge = rdr.GetDouble(4);
-                    }
-                    if (!rdr.IsDBNull(5))
-                    {
-                        width = rdr.GetDouble(5);
-                    }
-                    if (!rdr.IsDBNull(6))
-                    {
-                        order = rdr.GetDouble(6);
-                    }
-                    if (!rdr.IsDBNull(7))
-                    {
-                        p_order = rdr.GetString(7);
-                    }
-                    if (!rdr.IsDBNull(8))
-                    {
-                        month_recd = rdr.GetDouble(8);
-                    }
-                    if (!rdr.IsDBNull(9))
-                    {
-                        date_inwh = rdr.GetDateTime(9);
-                    }
-                    if (!rdr.IsDBNull(10))
-                    {
-                        date_transfer = rdr.GetDateTime(10);
-                    }
-                    if (!rdr.IsDBNull(11))
-                    {
-                        last_stocktake_date = rdr.GetDateTime(11);
-                    }
-                    if (!rdr.IsDBNull(12))
-                    {
-                        status = rdr.GetString(12);
-                    }
-                    if (!rdr.IsDBNull(13))
-                    {
-                        clength = rdr.GetDouble(13);
-                    }
-
-                    ViewBag.CoilID = coilID;
-                    ViewBag.Type = type;
-                    ViewBag.Color = color;
-                    ViewBag.Weight = weight;
-                    ViewBag.Gauge = gauge;
-                    ViewBag.Width = width;
-                    ViewBag.Order = order;
-                    ViewBag.P_order = p_order;
-                    ViewBag.Month_recd = month_recd;
-                    ViewBag.Date_inwh = date_inwh;
-                    ViewBag.Date_transfer = date_transfer;
-                    ViewBag.Last_stocktake_date = last_stocktake_date;
-                    ViewBag.Status = status;
-                    ViewBag.Clength = clength;
+                    newCon.Close();
                 }
-                else
-                {
-                    ViewBag.Error = "No information found in the database.";
-                }
-                
             }
             return View(model);
         }
-
     }
 }
