@@ -35,6 +35,11 @@ namespace Scanner.Controllers
             string ConnStr = ConfigurationManager.ConnectionStrings["GramScanner"].ToString();
             string input = model.CoilDetails[0].ID;
 
+            if (input == null)
+            {
+                return View(model);
+            }
+
             List<string> coilIDs = new List<string>();
 
             int splitAt = 9; // change 9 with the size of strings you want.
