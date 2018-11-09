@@ -35,6 +35,7 @@ namespace Scanner.Models
         public DateTime? Last_stocktake_date { get; set; }
         public string Status { get; set; }
         public double? Clength { get; set; }
+        public string Flag { get; set; }
     }
 
     public class CoilDetail
