@@ -15,6 +15,10 @@
                 $("#data tr").remove();
             });
 
+            $('#insertButton').click(function () {
+                $('#insert').val("INSERT");
+            });
+
             function submitForm() {
                 setTimeout(function () {
                     $("#code").submit();
@@ -83,7 +87,7 @@
         </form>
     </div>
     <div>
-        <input type="submit" id="upload" value="upload"/>
+        <input type="submit" id="insertButton" value="upload"/>
     </div>
     <div class="col-md-12">
         <div style="color:red; font-size:40px">@ViewBag.Error</div>
