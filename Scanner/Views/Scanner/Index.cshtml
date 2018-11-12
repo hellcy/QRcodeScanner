@@ -12,46 +12,40 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#clear').click(function () {
-                $("#data tr").remove();
+                $('#data').find("tr:gt(0)").remove();
             });
 
-            $('#insertButton').click(function () {
-                $('#insert').val("INSERT");
+            $('#uploadButton').click(function () {
+                $('#uploadFlag').val("UPLOAD");
+                uploadForm();
             });
 
-            function submitForm() {
+            function uploadForm() {
                 setTimeout(function () {
-                    $("#code").submit();
+                    $("#uploadForm").submit();
+                }, 0);
+            }
+
+            function displayForm() {
+                setTimeout(function () {
+                    $("#displayForm").submit();
                 }, 5000);
             }
 
-            $('#fsdfs').on('paste', function () {
-                submitForm();
+            $('#ID').on('paste input', function () {
+                displayForm();
             });
 
             $(window).keydown(function (event) {
-                submitForm();
                 if (event.keyCode == 13) {
                     event.preventDefault();
                     return false;
                 }
             });
 
-            $('#dflksj').on('paste', function () {
-                setTimeout(function () {
-                    $.ajax({
-                        type: "POST",
-                        url: "Scanner/Index",
-                        data: $("#code").serialize(),
-                        success: function () {
-                            alert("submitted");
-                        }
-
-                    })
-                }, 0);
-            });
             $("#ID").val(""); 
             $("#ID").focus();
+            $('#uploadFlag').val("");
         });
     </script>
 }
@@ -60,16 +54,16 @@
 <html>
 <body style="font-size:20px;">
     <div class="col-md-6">
-        <form id="code" action="Index" method="post">
+        <form id="displayForm" action="Index" method="post">
             <div class="editor-label">
                 CoilID Scanned
             </div>
             <div class="editor-field">
                 @Html.TextBoxFor(model => model.CoilDetails[0].ID, new { id = "ID" })
-                @Html.TextBoxFor(model => model.CoilDetails[0].Flag, new { id = "insert" })
             </div>
-            <input type="submit" id="clear" value="clear table" />
         </form>
+        <input type="submit" id="clear" value="clear table" />
+        <input type="submit" id="uploadButton" value="upload" />
     </div>
     <div class="col-md-6">
         <div style="width:300px; text-align:center;">
@@ -77,20 +71,15 @@
             Upload Data
         </div>
 
-        <form id="codeUpload" action="Index" method="post">
-            <div class="editor-label">
-                CoilID Uploaded
-            </div>
+        <form id="uploadForm" action="Index" method="post">
             <div class="editor-field">
-                @Html.TextBoxFor(model => model.CoilDetails[0].ID, new { id = "upload" })
+                @Html.TextBoxFor(model => model.CoilDetails[0].ID, new { id = "upload", type="hidden" })
+                @Html.TextBoxFor(model => model.CoilDetails[0].Flag, new { id = "uploadFlag", type="hidden" })
             </div>
         </form>
     </div>
-    <div>
-        <input type="submit" id="insertButton" value="upload"/>
-    </div>
     <div class="col-md-12">
-        <div style="color:red; font-size:40px">@ViewBag.Error</div>
+        <div style="color:red; font-size:40px">@ViewBag.Error @ViewBag.Upload</div>
         <table id="data" class="table table-condensed table-hover">
             <tr>
                 <th>
@@ -137,54 +126,55 @@
                 </th>
             </tr>
             @{
-                int i = 0;
-                foreach (var item in Model.CoilDetails.ToList())
+                if (Model != null && Model.CoilDetails[0].ID != "")
                 {
-                    <tr>
-                        <td>
-                            @item.ID
-                        </td>
-                        <td>
-                            @item.Type
-                        </td>
-                        <td>
-                            @item.Color
-                        </td>
-                        <td>
-                            @item.Weight
-                        </td>
-                        <td>
-                            @item.Gauge
-                        </td>
-                        <td>
-                            @item.Width
-                        </td>
-                        <td>
-                            @item.Order
-                        </td>
-                        <td>
-                            @item.P_order
-                        </td>
-                        <td>
-                            @item.Month_recd
-                        </td>
-                        <td>
-                            @item.Date_inwh
-                        </td>
-                        <td>
-                            @item.Date_transfer
-                        </td>
-                        <td>
-                            @item.Last_stocktake_date
-                        </td>
-                        <td>
-                            @item.Status
-                        </td>
-                        <td>
-                            @item.Clength
-                        </td>
-                    </tr>
-                    i++;
+                    foreach (var item in Model.CoilDetails.ToList())
+                    {
+                        <tr>
+                            <td>
+                                @item.ID
+                            </td>
+                            <td>
+                                @item.Type
+                            </td>
+                            <td>
+                                @item.Color
+                            </td>
+                            <td>
+                                @item.Weight
+                            </td>
+                            <td>
+                                @item.Gauge
+                            </td>
+                            <td>
+                                @item.Width
+                            </td>
+                            <td>
+                                @item.Order
+                            </td>
+                            <td>
+                                @item.P_order
+                            </td>
+                            <td>
+                                @item.Month_recd
+                            </td>
+                            <td>
+                                @item.Date_inwh
+                            </td>
+                            <td>
+                                @item.Date_transfer
+                            </td>
+                            <td>
+                                @item.Last_stocktake_date
+                            </td>
+                            <td>
+                                @item.Status
+                            </td>
+                            <td>
+                                @item.Clength
+                            </td>
+                        </tr>
+                    }
                 }
             }
         </table>

@@ -16,16 +16,16 @@ namespace Scanner.Controllers
 
         public ActionResult Index()
         {
-            List<CoilModel> newDetails = new List<CoilModel>()
-            {
-                new CoilModel { ID = "67A122A10" },
-                new CoilModel { ID = "67A580A30" }
-            };
+            //List<CoilModel> newDetails = new List<CoilModel>()
+            //{
+            //    new CoilModel { ID = "67A122A10" },
+            //    new CoilModel { ID = "67A580A30" }
+            //};
 
-            CoilDetail newCoilDetails = new CoilDetail();
-            newCoilDetails.CoilDetails = newDetails;
+            //CoilDetail newCoilDetails = new CoilDetail();
+            //newCoilDetails.CoilDetails = newDetails;
 
-            return View(newCoilDetails);
+            return View();
         }
 
         [HttpPost]
@@ -61,14 +61,14 @@ namespace Scanner.Controllers
             {
                 for (int i = 0; i < coilIDCount; i++)
                 {
-                    if (model.CoilDetails[0].Flag == "INSERT")
+                    if (model.CoilDetails[0].Flag == "UPLOAD")
                     {
-                        SqlCommand newCmd2 = new SqlCommand(("INSERT INTO X_COIL_TEST (COILID) values ('" + coilIDs[i] + "')"), newCon);
-                        //SqlCommand newCmd2 = new SqlCommand(("INSERT INTO X_COIL_TEST (COILID) select (COILID) from X_COIL_MASTER where COILID = '" + coilIDs[i] + "'"), newCon);
+                        SqlCommand newCmd2 = new SqlCommand(("IF NOT EXISTS (SELECT * FROM X_COIL_TEST WHERE COILID = '" + coilIDs[i] + "') BEGIN INSERT INTO X_COIL_TEST (COILID) values ('" + coilIDs[i] + "') END"), newCon);
                         newCon.Open();
                         SqlDataReader rdr2 = newCmd2.ExecuteReader();
+                        ViewBag.Upload = "Data uploaded!";
+                        model.CoilDetails[0].ID = "";
                         newCon.Close();
-                        return View(model);
                     }
                     else
                     {
@@ -91,11 +91,11 @@ namespace Scanner.Controllers
                             if (!rdr.IsDBNull(5))
                                 model.CoilDetails[i].Width = rdr.GetDouble(5);
                             if (!rdr.IsDBNull(6))
-                                model.CoilDetails[i].Order = rdr.GetDouble(6);
+                                model.CoilDetails[i].Order = rdr.GetInt32(6);
                             if (!rdr.IsDBNull(7))
                                 model.CoilDetails[i].P_order = rdr.GetString(7);
                             if (!rdr.IsDBNull(8))
-                                model.CoilDetails[i].Month_recd = rdr.GetDouble(8);
+                                model.CoilDetails[i].Month_recd = rdr.GetString(8);
                             if (!rdr.IsDBNull(9))
                                 model.CoilDetails[i].Date_inwh = rdr.GetDateTime(9);
                             if (!rdr.IsDBNull(10))
@@ -105,7 +105,7 @@ namespace Scanner.Controllers
                             if (!rdr.IsDBNull(12))
                                 model.CoilDetails[i].Status = rdr.GetString(12);
                             if (!rdr.IsDBNull(13))
-                                model.CoilDetails[i].Clength = rdr.GetDouble(13);
+                                model.CoilDetails[i].Clength = rdr.GetInt32(13);
                         }
                         else
                         {
