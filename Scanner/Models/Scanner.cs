@@ -20,6 +20,8 @@ namespace Scanner.Models
             Clength = null;
         }
 
+        public string Save { get; set; }
+        public string Input { get; set; }
         public string ID { get; set; }
         public string Type { get; set; }
         public string Color { get; set; }
@@ -39,6 +41,6 @@ namespace Scanner.Models
 
     public class CoilDetail
     {
-        public List<CoilModel> CoilDetails { get; set; }
+        public IList<CoilModel> CoilDetails { get; set; } = null;
     }
 }
