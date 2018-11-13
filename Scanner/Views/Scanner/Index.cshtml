@@ -11,14 +11,17 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#ID').focus();
+            $('#ID').val('');
 
             $('#clear').click(function () {
                 $('#data').find("tr:gt(0)").remove(); //remove all table rows except the headings
+                $('#Save').val('');
+                $('#uploadFlag').val("");
             });
 
             $('#uploadButton').click(function () {
                 $('#uploadFlag').val("UPLOAD");
-                uploadForm();
+                $("#tableData").submit();
             });
 
             function uploadForm() {
@@ -27,47 +30,16 @@
                 }, 0);
             }
 
-            //function displayForm() {
-            //    setTimeout(function () {
-            //        $("#tableData").submit(function () {
-            //            $('#Save').val($('#ID').val());
-            //            $('#ID').val('');
-            //            $('#ID').focus();
-            //            return true;
-            //        });
-            //    }, 0);
-            //}
-
-            $('#ID').on('paste input', function () {
-                if ($('#ID').val().length == 9) {
-                    $('#Save').val($('#ID').val());
-                    $('#ID').val('');
+            $('#ID').keydown(function (event) {
+                if (event.keyCode == 9) {
+                    $('#Save').val($('#Save').val() + $('#ID').val());
                     $("#tableData").submit();
                 }
             });
 
-            //$('#ID').on('input', function (event) {
-            //    if (event.keyCode == 13) {
-            //        event.preventDefault();
-            //        displayForm();
-            //    }
-            //});
-
-
-
-            //$('#ID').keypress(function (event) {
-            //    if (event.keyCode == 13) {
-            //        //setTimeout(function () {
-            //            event.preventDefault();
-            //            $('#ID').focus();
-            //            $("#tableData").submit();
-
-            //        //}, 0);
-            //    }
-            //});
-
             $('#ID').keypress(function (e) {
                 if (e.which == 13) {
+                    //e.preventDefault();
                     return false;    //<---- Add this line
                 }
             });
@@ -78,15 +50,15 @@
 <!DOCTYPE html>
 <html>
 <body style="font-size:15px;">
-    <form id="tableData" action="Index" method="post">
 
+    <form id="tableData" action="Index" method="post">
         <div class="col-md-6">
             <div class="editor-label">
                 CoilID Scanned
             </div>
             <div class="editor-field">
                 @Html.TextBoxFor(model => model.CoilDetails[0].Input, new { id = "ID" })
-                @Html.TextBoxFor(model => model.CoilDetails[0].Save, new { id = "Save" })
+                @Html.TextBoxFor(model => model.CoilDetails[0].Save, new { id = "Save", style = "width: 300px" })
             </div>
             <input type="submit" id="clear" value="clear table" />
             <input type="submit" id="uploadButton" value="upload" />
@@ -98,7 +70,7 @@
             </div>
 
             <div class="editor-field">
-                @Html.TextBoxFor(model => model.CoilDetails[0].Flag, new { id = "uploadFlag", type = "hidden" })
+                @Html.TextBoxFor(model => model.CoilDetails[0].Flag, new { id = "uploadFlag" })
             </div>
         </div>
         <div class="col-md-12">
@@ -204,7 +176,6 @@
                 }
             </table>
         </div>
-        <input type="hidden" id="finished" name="finished" value="1" />
     </form>
 
 </body>
