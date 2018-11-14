@@ -3,17 +3,80 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
+    <title>@ViewBag.Title - Gram Scanner</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
+        <style type="text/css" media="screen">
+        body {
+            position: relative
+        }
+    </style>
+    <style type="text/css" id="custom-background-css">
+        body.custom-background {
+            background-color: #eaf6ff;
+        }
+    </style>
 </head>
-<body>
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now</p>
-        </footer>
-    </div>
+<body style="width:100% !important;">
+        <table style="width:100%">
+            <tr>
+                <td>
+                    <div class="wrapper2" style="width:100% !important;">
+                        <div id="page" class="hfeed" style="width:100% !important;">
+                            <header id="branding" role="banner" style="width:100% !important;">
+                                @*<hgroup>*@
+                                <div style="width:100%; height:100px; float:left; margin-top:17px;">
+                                    <table style="margin-left:auto;margin-right:auto;width:1200px;">
+                                        <tr>
+                                            <td>
+                                                <img border="0" src="http://www.gram.com.au/wp-content/themes/twentyeleven/images/logo1.jpg" width="290" height="100" alt="Gramline" title="GramLine" />
+                                            </td>
+                                            <td>
+                                                <table style="height:100%;">
+                                                    <tr>
+                                                        <td>
+                                                            <div id="urgentMes"></div>
+                                                            <div style="position:absolute; width:315px;  right:176px; top:15px;">
+                                                                <span class="glyphicon glyphicon-home" style="color:#fff"></span><span class="glyphicon glyphicon-home" style="color:#fff"></span>
+                                                                &nbsp;&nbsp;<span style="font-size:17px; color:#fff;">MARKETING</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td valign="bottom">
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                @*</hgroup>*@
+                            </header>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table style="width:100%">
+                        <tr>
+                            <td style="width:95%">@RenderBody()</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <br /><br /><br />
+                                <footer style="width:100%">
+                                    <div style="text-align:center;"><hr style="width:400px;" /><p>&copy; @DateTime.Now.Year - Gram Engineering Pty Ltd</p></div>
+                                </footer>
+                                <br /><br /><br />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

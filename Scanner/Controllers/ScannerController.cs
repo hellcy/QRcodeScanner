@@ -29,7 +29,7 @@ namespace Scanner.Controllers
             string input;
 
             if (model.CoilDetails[0].Flag == "UPLOAD")
-                input = model.CoilDetails[0].Save;
+                input = model.CoilDetails[0].Save2;
             else
                 input = model.CoilDetails[0].Input;
 
@@ -46,10 +46,9 @@ namespace Scanner.Controllers
             {
                 coilIDCount++;
                 if (input.Length - i >= splitAt)
-                {
-                    //model.CoilDetails.Add(new CoilModel());
                     coilIDs.Add(input.Substring(i, splitAt - 24));
-                }
+                else if (input.Length - i >= 9)
+                    coilIDs.Add(input.Substring(i, i + 9));
                 else
                     coilIDs.Add(input.Substring(i, ((input.Length - i))));
             }
@@ -60,13 +59,13 @@ namespace Scanner.Controllers
                 {
                     if (model.CoilDetails[0].Flag == "UPLOAD")
                     {
-                        SqlCommand newCmd2 = new SqlCommand(("IF NOT EXISTS (SELECT * FROM X_COIL_TEST WHERE COILID = '" + coilIDs[i] + "') BEGIN INSERT INTO X_COIL_TEST SELECT * FROM X_COIL_MASTER WHERE COILID = ('" + coilIDs[i] + "') END"), newCon);
+                        //SqlCommand newCmd2 = new SqlCommand(("IF NOT EXISTS (SELECT * FROM X_COIL_TEST WHERE COILID = '" + coilIDs[i] + "') BEGIN INSERT INTO X_COIL_TEST SELECT * FROM X_COIL_MASTER WHERE COILID = ('" + coilIDs[i] + "') END"), newCon);
+                        var date = DateTime.Now;
+                        SqlCommand newCmd2 = new SqlCommand(("IF NOT EXISTS (SELECT * FROM X_COIL_TEST WHERE COILID = '" + coilIDs[i] + "') BEGIN INSERT INTO X_COIL_TEST (COILID, DATE_INSERT) VALUES ('" + coilIDs[i] + "', GETDATE()) END"), newCon);
                         newCon.Open();
                         SqlDataReader rdr2 = newCmd2.ExecuteReader();
 
                         ViewBag.Upload = "Data uploaded!";
-                        model.CoilDetails[0].Save = "";
-                        model.CoilDetails[0].Flag = "";
                         newCon.Close();
                     }
                     else
@@ -108,13 +107,13 @@ namespace Scanner.Controllers
                                 modelDetail.Status = rdr.GetString(12);
                             if (!rdr.IsDBNull(13))
                                 modelDetail.Clength = rdr.GetInt32(13);
-                            model.CoilDetails.Add(modelDetail);
                         }
                         else
                         {
                             ViewBag.Error = "No information found in the database.";
                         }
                         newCon.Close();
+                        model.CoilDetails.Add(modelDetail);
                     }
                 }
             }

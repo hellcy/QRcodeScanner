@@ -20,6 +20,7 @@ namespace Scanner.Models
             Clength = null;
         }
 
+        public string Save2 { get; set; }
         public string Save { get; set; }
         public string Input { get; set; }
         public string ID { get; set; }
