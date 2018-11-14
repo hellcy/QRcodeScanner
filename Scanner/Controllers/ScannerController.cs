@@ -110,7 +110,8 @@ namespace Scanner.Controllers
                         }
                         else
                         {
-                            ViewBag.Error = "No information found in the database.";
+                            if (coilIDs.Count == 1)
+                                ViewBag.Error = "No information was found in the database.";
                         }
                         newCon.Close();
                         model.CoilDetails.Add(modelDetail);

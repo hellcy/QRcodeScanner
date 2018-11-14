@@ -18,6 +18,7 @@ namespace Scanner.Models
             Date_transfer = null;
             Last_stocktake_date = null;
             Clength = null;
+            Count = 0;
         }
 
         public string Save2 { get; set; }
@@ -38,6 +39,7 @@ namespace Scanner.Models
         public string Status { get; set; }
         public int? Clength { get; set; }
         public string Flag { get; set; }
+        public int Count { get; set; }
     }
 
     public class CoilDetail
