@@ -24,7 +24,7 @@ namespace Scanner.Controllers
         [HttpPost]
         public ActionResult Index(CoilDetail model)
         {
-            string ConnStr = ConfigurationManager.ConnectionStrings["GramScanner"].ToString();
+            string ConnStr = ConfigurationManager.ConnectionStrings["GramLineConn"].ToString();
 
             string input;
 
@@ -48,7 +48,7 @@ namespace Scanner.Controllers
                 if (input.Length - i >= splitAt)
                     coilIDs.Add(input.Substring(i, splitAt - 24));
                 else if (input.Length - i >= 9)
-                    coilIDs.Add(input.Substring(i, i + 9));
+                    coilIDs.Add(input.Substring(i, 9));
                 else
                     coilIDs.Add(input.Substring(i, ((input.Length - i))));
             }
